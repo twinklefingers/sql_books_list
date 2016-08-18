@@ -140,9 +140,9 @@ function selectGenre() {
         url: '/books/' + getGenre,
         success: function(bookList) {
             console.log('Genre select success');
-            // $('#book-list').empty();
+            $('#book-list').empty();
             console.log(bookList);
-            // getBooks(); << change to a function that shows only one genre
+
 
             // console.log('GET /books returns:', books);
             bookList.forEach(function(book) {
@@ -151,12 +151,28 @@ function selectGenre() {
 
                 bookProperties.forEach(function(property) {
                     var inputType = 'text';
-                    // if (property == 'published') {
+                    if (property == 'published') {
+                        //inputType = 'date';
+                        //get strings for month/day/year
+                        book[property] = new Date(book[property]);      
+                        var month = book[property].getUTCMonth(book[property]) + 1; //months from 1-12
+                                    
+                        var day = book[property].getUTCDate(book[property]);            
+                        var year = book[property].getUTCFullYear(book[property]);
+
+                                     //catcatcanate into one string month/day/year and set to book.published as text
+                                    
+                        book[property] = month + "/" + day + "/" + year;
+                    }
+
 
                     var $input = $('<input type="' + inputType + '" id="' + property + '"name="' + property + '" />');
+
                     console.log("input ", $('input').text(), book[property]);
+
                     $input.val(book[property]);
-                    // $el.append($input);
+                    $('#book-list').append($input);
+                    $('#book-list').append($el);
                     // console.log($el);
                 });
             });
